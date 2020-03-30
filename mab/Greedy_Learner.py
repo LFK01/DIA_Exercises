@@ -1,5 +1,5 @@
-from Learner import *
-
+from mab.Learner import *
+import numpy as np
 
 class GreedyLearner(Learner):
     def __init__(self, n_arms):
@@ -11,11 +11,11 @@ class GreedyLearner(Learner):
             return self.t
         idxs = np.argwhere(self.expected_rewards == self.expected_rewards.max()).reshape(-1)
         # returns indexes of arms with highest reward
-        pulled_arm = numpy.random.choice(idxs)
+        pulled_arm = np.random.choice(idxs)
         # chooses one index in case of ties
         return pulled_arm
 
     def update(self, pulled_arm, reward):
         self.t += 1
-        self.update_obeservations(pulled_arm, reward)
+        self.update_observations(pulled_arm, reward)
         self.expected_rewards[pulled_arm] = (self.expected_rewards[pulled_arm] * (self.t - 1) + reward) / self.t

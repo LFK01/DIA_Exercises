@@ -1,4 +1,5 @@
-from Learner import *
+from mab.Learner import *
+import numpy as np
 
 
 class TS_Learner(Learner):
@@ -7,12 +8,13 @@ class TS_Learner(Learner):
         super().__init__(n_arms)
         self.beta_parameters = np.ones((n_arms, 2))
 
-    def pulled_arm(self):
-        idx = np.argmax(numpy.random.beta(self.beta_parameters[:, 0], self.beta_parameters[:, 1]))
+    def pull_arm(self):
+        idx = np.argmax(np.random.beta(self.beta_parameters[:, 0], self.beta_parameters[:, 1]))
+        print("TS-Learner: pulled " + str(idx))
         return idx
 
     def update(self, pulled_arm, reward):
         self.t += 1
-        self.update_obeservations(pulled_arm, reward)
+        self.update_observations(pulled_arm, reward)
         self.beta_parameters[pulled_arm, 0] = self.beta_parameters[pulled_arm, 0] + reward
         self.beta_parameters[pulled_arm, 1] = self.beta_parameters[pulled_arm, 1] + 1.0 - reward
